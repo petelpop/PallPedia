@@ -1,16 +1,17 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.pall.pallpedia"
-    compileSdk = 33
+    compileSdkPreview = "UpsideDownCake"
 
     defaultConfig {
         applicationId = "com.pall.pallpedia"
         minSdk = 28
-        targetSdk = 33
+        targetSdkPreview = "UpsideDownCake"
         versionCode = 1
         versionName = "1.0"
 
@@ -33,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -44,4 +48,25 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    // Splash Screen Android 12
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // Picasso - Image loader
+    // Image downloader that allow developer break the pain cycle to display imagers
+    implementation("com.squareup.picasso:picasso:2.8")
+
+    // Moshi
+    // JSON converter - serialize and deserialize object to and from JSON
+    // 1 of libraries JSON converters for data serialization
+    implementation("com.squareup.moshi:moshi:1.14.0")
+
+    // kotlin Codegen
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
+    // Retrofit - Request HTTP/HTTPS client
+    // HTTP clien - Retrofit with OkHTTP
+    // to retrieve and upload JSON (or other structured data) via a REST based webservice
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 }
