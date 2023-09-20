@@ -1,13 +1,16 @@
 package com.pall.pallpedia.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pall.pallpedia.NewsViewModel
 import com.pall.pallpedia.R
+import com.pall.pallpedia.adapter.NewsAdapter
 import com.pall.pallpedia.databinding.FragmentCommonBinding
 
 class CommonFragment : Fragment() {
@@ -29,6 +32,16 @@ class CommonFragment : Fragment() {
         binding.loadingView.root.visibility = View.VISIBLE
         _viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
         viewModel.getCommonNews()
-        binding.loadingView.root.visibility = View.GONE
+        viewModel.commonNews.observe(viewLifecycleOwner) {
+            val data = it.articles
+            Log.i("CommonFragment", "onResponse: $it ")
+            binding.rvCommon.apply {
+                val mAdapter = NewsAdapter()
+                mAdapter.setData(data)
+                adapter = mAdapter
+                layoutManager = LinearLayoutManager(context)
+            }
+            binding.loadingView.root.visibility = View.GONE
+        }
     }
 }
