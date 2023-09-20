@@ -33,20 +33,5 @@ class MainActivity : AppCompatActivity() {
             tab.text = listFragment[position]
         }.attach()
 
-        ApiClient.retrofit.getCommonNews().enqueue(object : Callback<NewsResponse> {
-            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
-                Toast.makeText(this@MainActivity, "OK", Toast.LENGTH_SHORT).show()
-                Log.i("MainActivity", "onResponse: ${response.body()}")
-            }
-
-            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-                Snackbar.make(
-                    findViewById(com.google.android.material.R.id.content),
-                   "Call Failed: " + t.localizedMessage,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-
-        })
     }
 }
