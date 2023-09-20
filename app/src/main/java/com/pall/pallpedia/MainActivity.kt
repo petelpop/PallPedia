@@ -2,9 +2,17 @@ package com.pall.pallpedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pall.pallpedia.adapter.SectionPagerAdapter
+import com.pall.pallpedia.data.NewsResponse
+import com.pall.pallpedia.data.network.ApiClient
 import com.pall.pallpedia.databinding.ActivityMainBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -24,5 +32,21 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.vpContainer) { tab, position ->
             tab.text = listFragment[position]
         }.attach()
+
+        ApiClient.retrofit.getCommonNews().enqueue(object : Callback<NewsResponse> {
+            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+                Toast.makeText(this@MainActivity, "OK", Toast.LENGTH_SHORT).show()
+                Log.i("MainActivity", "onResponse: ${response.body()}")
+            }
+
+            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                Snackbar.make(
+                    findViewById(com.google.android.material.R.id.content),
+                   "Call Failed: " + t.localizedMessage,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+
+        })
     }
 }

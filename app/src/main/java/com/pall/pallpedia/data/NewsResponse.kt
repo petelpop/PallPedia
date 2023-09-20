@@ -1,7 +1,9 @@
 package com.pall.pallpedia.data
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class NewsResponse(
 
 	@Json(name="totalResults")
@@ -14,6 +16,7 @@ data class NewsResponse(
 	val status: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class Source(
 
 	@Json(name="name")
@@ -23,6 +26,7 @@ data class Source(
 	val id: Any? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class ArticlesItem(
 
 	@Json(name="publishedAt")

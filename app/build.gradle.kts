@@ -65,7 +65,7 @@ dependencies {
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     // Retrofit - Request HTTP/HTTPS client
-    // HTTP clien - Retrofit with OkHTTP
+    // HTTP client - Retrofit with OkHTTP
     // to retrieve and upload JSON (or other structured data) via a REST based webservice
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
