@@ -1,8 +1,10 @@
 package com.pall.pallpedia.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.pall.pallpedia.DetailActivity
 import com.pall.pallpedia.data.ArticlesItem
 import com.pall.pallpedia.databinding.ItemNewsBinding
 import com.squareup.picasso.Picasso
@@ -30,6 +32,11 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
             itemTitle.text = data.title
             itemDate.text = data.publishedAt
             Picasso.get().load(data.urlToImage).into(itemImage)
+        }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(it.context, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.EXTRA_DATA, data)
+            it.context.startActivity(intent)
         }
     }
 }

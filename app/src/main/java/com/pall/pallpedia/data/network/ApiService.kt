@@ -32,4 +32,11 @@ interface ApiService {
     fun getDailyNews(
         @Query("q") keyWord: String = "daily"
     ) : Call<NewsResponse>
+
+    @GET("everything")
+
+    fun searchNews(
+        @Query("q") query: String,
+        @Query("pageSize") pageSize: Int = 50
+    ) : Call<NewsResponse>
 }

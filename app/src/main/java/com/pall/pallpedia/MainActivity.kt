@@ -3,6 +3,8 @@ package com.pall.pallpedia
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -32,6 +34,19 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.vpContainer) { tab, position ->
             tab.text = listFragment[position]
         }.attach()
-
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        // val searchView = menu?.findItem(R.id.option_search)?.actionView as SearchView
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.option_search -> onSearchRequested()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }

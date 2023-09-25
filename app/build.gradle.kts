@@ -1,7 +1,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    // Moshi Kotlin Codegen
     id("com.google.devtools.ksp")
+    // Kotlin Parcelize - Parcelable Data Class
+    id("kotlin-parcelize")
 }
 
 android {
@@ -10,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pall.pallpedia"
-        minSdk = 28
+        minSdk = 33
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
