@@ -9,7 +9,7 @@ import retrofit2.http.Query
 import java.nio.channels.spi.AbstractSelectionKey
 
 interface ApiService {
-    @GET("/everything")
+    @GET("everything")
     fun getCommonNews(
         @Query("q") query: String = "daily",
         @Query("language") language: String = "en",
@@ -23,7 +23,7 @@ interface ApiService {
         @Query("language") language: String = "en"
     ) : Call<NewsResponse>
 
-    @GET("top-headLines")
+    @GET("everything")
     fun getPoliticNews(
         @Query("sources") sources:String = "politic"
     ) : Call<NewsResponse>
@@ -34,7 +34,6 @@ interface ApiService {
     ) : Call<NewsResponse>
 
     @GET("everything")
-
     fun searchNews(
         @Query("q") query: String,
         @Query("pageSize") pageSize: Int = 50

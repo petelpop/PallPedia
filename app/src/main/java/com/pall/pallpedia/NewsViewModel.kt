@@ -44,10 +44,68 @@ class NewsViewModel : ViewModel() {
 
     }
 
+    fun getDailyNews() {
+        ApiClient.getApiService().getDailyNews().enqueue(object : Callback<NewsResponse> {
+            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+                if (response.isSuccessful) {
+                    _commonNews.postValue(response.body())
+                } else Log.e(
+                    "ViewModel",
+                    "onFailedCall: Call error Http Status Code :" + response.code()
+                )
+            }
+
+            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                Log.e("ViewModel", "onFailure: " + t.localizedMessage )
+            }
+
+        })
+
+    }
+
+    fun getPoliticNews() {
+        ApiClient.getApiService().getPoliticNews().enqueue(object : Callback<NewsResponse> {
+            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+                if (response.isSuccessful) {
+                    _commonNews.postValue(response.body())
+                } else Log.e(
+                    "ViewModel",
+                    "onFailedCall: Call error Http Status Code :" + response.code()
+                )
+            }
+
+            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                Log.e("ViewModel", "onFailure: " + t.localizedMessage )
+            }
+
+        })
+
+    }
+
+    fun getDisasterNews() {
+        ApiClient.getApiService().getDisasterNews().enqueue(object : Callback<NewsResponse> {
+            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+                if (response.isSuccessful) {
+                    _commonNews.postValue(response.body())
+                } else Log.e(
+                    "ViewModel",
+                    "onFailedCall: Call error Http Status Code :" + response.code()
+                )
+            }
+
+            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                Log.e("ViewModel", "onFailure: " + t.localizedMessage )
+            }
+
+        })
+
+    }
+
     fun searchNews(query: String) {
         ApiClient.getApiService().searchNews(query).enqueue(object: Callback<NewsResponse> {
             override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
                 if (response.isSuccessful) {
+                    _searchNews.value = response.body()
                     _searchNews.postValue(response.body())
                 } else Log.e("NewsViewModel", "onResponse: ${response.message()}")
             }

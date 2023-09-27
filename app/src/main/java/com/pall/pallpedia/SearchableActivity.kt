@@ -1,23 +1,26 @@
 package com.pall.pallpedia
 
 import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pall.pallpedia.adapter.NewsAdapter
 import com.pall.pallpedia.databinding.ActivityDetailBinding
 import com.pall.pallpedia.databinding.ActivitySearchableBinding
 
-class SearchableActivity : AppCompatActivity() {
+class SearchableActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private var _binding: ActivitySearchableBinding? = null
     private val binding get() = _binding as ActivitySearchableBinding
 
     private var _searchViewModel: NewsViewModel? = null
     private val searchViewModel get() = _searchViewModel as NewsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySearchableBinding.inflate(layoutInflater)
@@ -25,16 +28,9 @@ class SearchableActivity : AppCompatActivity() {
 
         _searchViewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
+        handleIntent(intent)
 
-        // Verify the action and get the query
-        if (Intent.ACTION_SEARCH == intent.action) {
-            //kotlin scope - also
-            // mengambil value dari code yang mengimplementasikannya
-            // kemudian memberikannya kedalam body lambda expression
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                doMySearch(query)
-            }
-        }
+        binding.searchNews.setOnQueryTextListener(this)
 
         searchViewModel.searchNews.observe(this) {
             binding.rvSearchResult.apply {
@@ -46,9 +42,47 @@ class SearchableActivity : AppCompatActivity() {
         }
     }
 
-    private fun doMySearch(query: String) {
-        Toast.makeText(this, "query", Toast.LENGTH_SHORT).show()
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
     }
 
+    private fun handleIntent(intent: Intent) {
+        if (Intent.ACTION_SEARCH == intent.action) {
+            // kotlin Scope - olso
+            // mengammbil value dari code yang mengimplementasikan nya
+            // kemudian mengembalikan value ke dalam body lambda expresion
+            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                doMySearch(query)
+            }
+        }
+    }
 
+    private fun doMySearch(query: String) {
+        searchViewModel.searchNews(query)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        binding.searchNews.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            clearFocus()
+            queryHint = "Search your News"
+            setQuery("", false)
+        }
+
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return when (!newText.isNullOrBlank()) {
+            true -> {
+                searchViewModel.searchNews(newText)
+                true
+            }
+
+            else -> false
+        }
+    }
 }
