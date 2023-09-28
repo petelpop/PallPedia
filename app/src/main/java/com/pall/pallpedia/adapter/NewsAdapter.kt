@@ -8,6 +8,10 @@ import com.pall.pallpedia.DetailActivity
 import com.pall.pallpedia.data.ArticlesItem
 import com.pall.pallpedia.databinding.ItemNewsBinding
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.SimpleTimeZone
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
     private val listNews = ArrayList<ArticlesItem>()
@@ -28,6 +32,36 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val data = listNews[position]
+
+        val date = data.publishedAt?.take(10)
+        val time = data.publishedAt?.takeLast(9)
+        val dateArray = date?.split("-")?.toTypedArray()
+        val timeArray = time?.split(":")?.toTypedArray()
+
+
+
+        val calendar = Calendar.getInstance()
+        dateArray?.let {
+            calendar.set(Calendar.YEAR, it[0].toInt())
+            calendar.set(Calendar.MONTH, it[1].toInt() - 1)
+            calendar.set(Calendar.DAY_OF_MONTH, it[2].toInt())
+
+            calendar.set(Calendar.HOUR, it[0].toInt())
+            calendar.set(Calendar.MINUTE, it[1].toInt())
+        }
+
+        timeArray?.let {
+            calendar.set(Calendar.HOUR, it[0].toInt())
+            calendar.set(Calendar.MINUTE, it[1].toInt())
+        }
+
+
+
+        val dateFormat = SimpleDateFormat("MM, dd ''yy", Locale.getDefault()).format(calendar.time)
+        val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault()).format(calendar.time)
+
+        val publishedResult = "$dateFormat at $timeFormat"
+
         holder.binding.apply {
             itemTitle.text = data.title
             itemDate.text = data.publishedAt
